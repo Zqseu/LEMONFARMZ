@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🍋 Godzilla Farmz</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-content">
+                <button class="header-btn close-btn">✕ Close</button>
+                <div class="header-logo">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='60' font-size='50' fill='%23FFD60A' text-anchor='middle'%3E🍋%3C/text%3E%3C/svg%3E" alt="Logo" class="logo-img">
+                    <span>GODZILLA FARMZ</span>
+                </div>
+                <button class="header-btn menu-btn">☰</button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="app-main">
+            <!-- PAGE: ACCUEIL -->
+            <section id="accueil" class="page active">
+                <div class="hero-banner">
+                    <div class="godzilla-welcome">
+                        <h1>GODZILLA<br>FARMZ</h1>
+                        <p class="subtitle">HU$TLED</p>
+                    </div>
+                </div>
+                
+                <div class="welcome-box">
+                    <h2>Bienvenue chez Godzilla Farmz 🍋</h2>
+                    <p class="welcome-text">👉 Clique juste en dessous pour ouvrir notre mini-app et découvrir tous nos produits, nos menus, et surtout nos nouveaux arrivages chaque semaine</p>
+                    <p class="gift-text">🎁 toute vos commande sont livrer avec un cadeau 🎁</p>
+                </div>
+
+                <div class="info-section">
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Livraison</h3>
+                            <p>de 13h à 00h</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Meet up</h3>
+                            <p>de 12h à 00h</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-globe"></i>
+                        <div>
+                            <h3>Envoi</h3>
+                            <p>toute l'Europe</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-signature">
+                    <p>La Team Godzilla Farmz 😻</p>
+                </div>
+            </section>
+
+            <!-- PAGE: ARCADE (JEUX) -->
+            <section id="arcade" class="page">
+                <h2 class="section-title">ARCADE</h2>
+                
+                <div class="games-container">
+                    <div class="game-card" onclick="startGame('snake')">
+                        <div class="game-image snake-game-image">
+                            <span class="game-title-neon">SNAKE</span>
+                        </div>
+                        <h3>Snake</h3>
+                        <p>Le classique revisité — ramasse les bonus et grimpe dans le classement !</p>
+                        <p class="record">Record perso : <span id="snake-record">5</span></p>
+                        <button class="play-btn">Jouer</button>
+                    </div>
+
+                    <div class="game-card" onclick="startGame('neospin')">
+                        <div class="game-image neospin-image">
+                            <span class="game-title">NEOSPIN</span>
+                        </div>
+                        <h3>NeoSpin</h3>
+                        <p>Tourne la roue et remporte des récompenses!</p>
+                        <p class="record">Record perso : 1000</p>
+                        <button class="play-btn">Jouer</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE: BOUTIQUE -->
+            <section id="boutique" class="page">
+                <h2 class="section-title">BOUTIQUE</h2>
+                <div class="shop-grid">
+                    <div class="product-card">
+                        <div class="product-image">🍋</div>
+                        <h3>Starter Pack</h3>
+                        <p class="price">29€</p>
+                        <button class="add-btn">Ajouter</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🎁</div>
+                        <h3>Mystery Box</h3>
+                        <p class="price">49€</p>
+                        <button class="add-btn">Ajouter</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">👑</div>
+                        <h3>Premium Pack</h3>
+                        <p class="price">99€</p>
+                        <button class="add-btn">Ajouter</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PAGE: NOUS CONTACTER -->
+            <section id="contact" class="page">
+                <h2 class="section-title">NOUS CONTACTER</h2>
+                <p class="contact-subtitle">Choisissez votre forme préférée</p>
+                
+                <div class="contact-list">
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-info">
+                            <h3>Instagram</h3>
+                            <p>Rejoignez notre insta</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">🥔</div>
+                        <div class="contact-info">
+                            <h3>Potato</h3>
+                            <p>Rejoignez notre potato</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="https://wa.me/33612345678" class="contact-item">
+                        <div class="contact-icon">💬</div>
+                        <div class="contact-info">
+                            <h3>WhatsApp</h3>
+                            <p>Nôtre Whatsapp</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-info">
+                            <h3>Canal telegram</h3>
+                            <p>Nôtre canal telegram</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">📨</div>
+                        <div class="contact-info">
+                            <h3>Canal secours</h3>
+                            <p>Canal secours</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">✈️</div>
+                        <div class="contact-info">
+                            <h3>Groupe telegram</h3>
+                            <p>Chat telegram</p>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </div>
+            </section>
+
+            <!-- PAGE: INFORMATIONS -->
+            <section id="infos" class="page">
+                <h2 class="section-title">INFORMATIONS</h2>
+                <p class="infos-subtitle">Toutes les infos sur nos services</p>
+                
+                <div class="info-cards">
+                    <div class="large-info-card">
+                        <i class="fas fa-clock"></i>
+                        <h3>Horaire de livraison</h3>
+                        <p>Ouvert de 12h à 00h</p>
+                    </div>
+                    <div class="large-info-card">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Zone de livraison</h3>
+                        <p>Toute l'Europe</p>
+                    </div>
+                    <div class="large-info-card">
+                        <i class="fas fa-truck"></i>
+                        <h3>Délai de livraison</h3>
+                        <p>2-3 jours ouvrables</p>
+                    </div>
+                    <div class="large-info-card">
+                        <i class="fas fa-lock"></i>
+                        <h3>Sécurité</h3>
+                        <p>Paiement sécurisé</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button class="nav-btn active" data-page="accueil">
+                <i class="fas fa-home"></i>
+                <span>ACCUEIL</span>
+            </button>
+            <button class="nav-btn" data-page="arcade">
+                <i class="fas fa-star"></i>
+                <span>★</span>
+            </button>
+            <button class="nav-btn" data-page="boutique">
+                <i class="fas fa-shopping-cart"></i>
+                <span>PANIER</span>
+            </button>
+            <button class="nav-btn" data-page="infos">
+                <i class="fas fa-info-circle"></i>
+                <span>INFOS</span>
+            </button>
+            <button class="nav-btn" data-page="contact">
+                <i class="fas fa-envelope"></i>
+                <span>CONTACT</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
