@@ -183,4 +183,4 @@ document.getElementById('product-modal')?.addEventListener('click', (e) => {
 // Initialize cart on page load
 updateCart();
 
-console.log('🍋 Godzilla Farmz Mini-App loaded!');
+console.log('🍋 LEMONFARMZ Mini-App loaded!');
