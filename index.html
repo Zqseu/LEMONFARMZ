@@ -6,6 +6,7 @@
     <title>🍋 Godzilla Farmz</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@telegram-apps/sdk@0.0.6/dist/index.umd.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -14,10 +15,19 @@
             <div class="header-content">
                 <button class="header-btn close-btn">✕ Close</button>
                 <div class="header-logo">
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='50' y='60' font-size='50' fill='%23FFD60A' text-anchor='middle'%3E🍋%3C/text%3E%3C/svg%3E" alt="Logo" class="logo-img">
+                    <span class="logo-emoji">🍋</span>
                     <span>GODZILLA FARMZ</span>
                 </div>
                 <button class="header-btn menu-btn">☰</button>
+            </div>
+            <div class="user-info">
+                <div class="user-id">
+                    <i class="fas fa-wallet"></i>
+                    <span id="telegram-user">#31#</span>
+                </div>
+                <div class="user-stars">
+                    <i class="fas fa-star"></i>
+                </div>
             </div>
         </header>
 
@@ -94,27 +104,150 @@
                 </div>
             </section>
 
-            <!-- PAGE: BOUTIQUE -->
+            <!-- PAGE: BOUTIQUE/PRODUITS -->
             <section id="boutique" class="page">
-                <h2 class="section-title">BOUTIQUE</h2>
-                <div class="shop-grid">
-                    <div class="product-card">
-                        <div class="product-image">🍋</div>
-                        <h3>Starter Pack</h3>
-                        <p class="price">29€</p>
-                        <button class="add-btn">Ajouter</button>
+                <div class="shop-header">
+                    <h2 class="section-title">PRODUITS</h2>
+                    <span class="product-count">2 produits</span>
+                </div>
+
+                <div class="promo-banner">
+                    <p>🎁 Chaque commande livré avec un cadeau 🎁</p>
+                </div>
+
+                <div class="filter-section">
+                    <button class="filter-btn">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
+                    <select class="filter-dropdown" id="category-filter">
+                        <option value="">Catégories</option>
+                        <option value="banana">Banana Sift</option>
+                        <option value="lemonhaze">Lemon Haze</option>
+                        <option value="all">Tous les produits</option>
+                    </select>
+                    <select class="filter-dropdown" id="farm-filter">
+                        <option value="">Farms</option>
+                        <option value="olive">Olive Farm</option>
+                        <option value="jaune">Jaune Mousseux</option>
+                        <option value="all">Toutes les farms</option>
+                    </select>
+                </div>
+
+                <div class="products-grid">
+                    <!-- PRODUIT 1: OLIVE SIFT BANANA -->
+                    <div class="product-card" data-category="banana" data-farm="olive" onclick="showProductDetail('banana-sift')">
+                        <div class="product-image-container">
+                            <svg class="product-image-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Fond urbain style Godzilla -->
+                                <defs>
+                                    <linearGradient id="urbanGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#FFD60A;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#1a0033;stop-opacity:0.8" />
+                                    </linearGradient>
+                                </defs>
+                                <rect width="400" height="400" fill="url(#urbanGrad1)"/>
+                                
+                                <!-- Bâtiments urbains -->
+                                <rect x="20" y="150" width="80" height="200" fill="#2a2a2a"/>
+                                <rect x="300" y="180" width="80" height="170" fill="#1a1a1a"/>
+                                
+                                <!-- Citron avec arme (simplifié) -->
+                                <circle cx="200" cy="180" r="80" fill="#FFD60A" stroke="#FFC300" stroke-width="3"/>
+                                <!-- Œil -->
+                                <circle cx="180" cy="160" r="8" fill="#000"/>
+                                <circle cx="220" cy="160" r="8" fill="#000"/>
+                                <!-- Bouche -->
+                                <path d="M 180 190 Q 200 210 220 190" stroke="#000" stroke-width="2" fill="none"/>
+                                <!-- Pistolet stylisé -->
+                                <rect x="240" y="140" width="50" height="20" fill="#333" rx="3"/>
+                                <circle cx="290" cy="150" r="8" fill="#555"/>
+                                
+                                <!-- Texte BANANA SIFT -->
+                                <text x="200" y="340" font-size="48" font-weight="bold" text-anchor="middle" fill="#FFD60A" font-family="Arial Black" text-shadow="2px 2px 4px #000">BANANA</text>
+                                <text x="200" y="375" font-size="36" font-weight="bold" text-anchor="middle" fill="#FFC300" font-family="Arial Black">SIFT</text>
+                            </svg>
+                        </div>
+                        <div class="product-info">
+                            <h3>Olive Sift Banana</h3>
+                            <div class="product-tags">
+                                <span class="tag">🟡 Jaune</span>
+                                <span class="tag">🍌 Banana</span>
+                            </div>
+                            <div class="product-prices">
+                                <p>5g <span class="price">70€</span></p>
+                                <p>10g <span class="price">120€</span></p>
+                                <p class="more-text">+ en privé</p>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Olive Sift Banana 5g', 70); event.stopPropagation();">+ Ajouter</button>
+                        </div>
                     </div>
-                    <div class="product-card">
-                        <div class="product-image">🎁</div>
-                        <h3>Mystery Box</h3>
-                        <p class="price">49€</p>
-                        <button class="add-btn">Ajouter</button>
+
+                    <!-- PRODUIT 2: JAUNE MOUSSEUX LEMON HAZE -->
+                    <div class="product-card" data-category="lemonhaze" data-farm="jaune" onclick="showProductDetail('lemonhaze')">
+                        <div class="product-image-container">
+                            <svg class="product-image-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <!-- Fond urbain style Godzilla -->
+                                <defs>
+                                    <linearGradient id="urbanGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:0.4" />
+                                        <stop offset="100%" style="stop-color:#FF6600;stop-opacity:0.8" />
+                                    </linearGradient>
+                                </defs>
+                                <rect width="400" height="400" fill="url(#urbanGrad2)"/>
+                                
+                                <!-- Bâtiments urbains -->
+                                <rect x="30" y="140" width="90" height="210" fill="#3a3a3a"/>
+                                <rect x="280" y="170" width="90" height="180" fill="#2a2a2a"/>
+                                
+                                <!-- Citron avec arme (simplifié) -->
+                                <circle cx="200" cy="180" r="80" fill="#FFFF00" stroke="#FFD60A" stroke-width="3"/>
+                                <!-- Œil -->
+                                <circle cx="180" cy="160" r="8" fill="#000"/>
+                                <circle cx="220" cy="160" r="8" fill="#000"/>
+                                <!-- Bouche -->
+                                <path d="M 180 190 Q 200 210 220 190" stroke="#000" stroke-width="2" fill="none"/>
+                                <!-- Pistolet stylisé -->
+                                <rect x="240" y="140" width="50" height="20" fill="#444" rx="3"/>
+                                <circle cx="290" cy="150" r="8" fill="#666"/>
+                                
+                                <!-- Texte LEMONHAZE -->
+                                <text x="200" y="340" font-size="44" font-weight="bold" text-anchor="middle" fill="#FF6600" font-family="Arial Black" text-shadow="2px 2px 4px #000">LEMON</text>
+                                <text x="200" y="375" font-size="40" font-weight="bold" text-anchor="middle" fill="#FFFF00" font-family="Arial Black">HAZE</text>
+                            </svg>
+                        </div>
+                        <div class="product-info">
+                            <h3>Jaune Mousseux Lemon Haze</h3>
+                            <div class="product-tags">
+                                <span class="tag">🍋 Lemon</span>
+                                <span class="tag">⚡ Haze</span>
+                            </div>
+                            <div class="product-prices">
+                                <p>10g <span class="price">50€</span></p>
+                                <p>25g <span class="price">100€</span></p>
+                                <p>100g <span class="price">300€</span></p>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux Lemon Haze 10g', 50); event.stopPropagation();">+ Ajouter</button>
+                        </div>
                     </div>
-                    <div class="product-card">
-                        <div class="product-image">👑</div>
-                        <h3>Premium Pack</h3>
-                        <p class="price">99€</p>
-                        <button class="add-btn">Ajouter</button>
+                </div>
+            </section>
+
+            <!-- PAGE: PANIER -->
+            <section id="panier" class="page">
+                <h2 class="section-title">🛒 PANIER</h2>
+                <div id="cart-container">
+                    <div id="cart-items" class="cart-items"></div>
+                    <div id="cart-empty" class="cart-empty">
+                        <p>VOTRE PANIER EST VIDE</p>
+                        <p>Ajoutez des produits pour commencer vos achats</p>
+                        <button class="discover-btn" onclick="showPage('boutique')">Découvrir les produits</button>
+                    </div>
+                    <div id="cart-total" class="cart-total" style="display:none;">
+                        <div class="total-row">
+                            <span>Total:</span>
+                            <span id="total-price">0€</span>
+                        </div>
+                        <button class="checkout-btn">Commander</button>
                     </div>
                 </div>
             </section>
@@ -145,7 +278,7 @@
                         <div class="contact-icon">💬</div>
                         <div class="contact-info">
                             <h3>WhatsApp</h3>
-                            <p>Nôtre Whatsapp</p>
+                            <p>Notre Whatsapp</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
@@ -153,12 +286,12 @@
                         <div class="contact-icon">✉️</div>
                         <div class="contact-info">
                             <h3>Canal telegram</h3>
-                            <p>Nôtre canal telegram</p>
+                            <p>Notre canal telegram</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     <a href="#" class="contact-item">
-                        <div class="contact-icon">📨</div>
+                        <div class="contact-icon">📧</div>
                         <div class="contact-info">
                             <h3>Canal secours</h3>
                             <p>Canal secours</p>
@@ -214,7 +347,7 @@
             </button>
             <button class="nav-btn" data-page="arcade">
                 <i class="fas fa-star"></i>
-                <span>★</span>
+                <span>⭐</span>
             </button>
             <button class="nav-btn" data-page="boutique">
                 <i class="fas fa-shopping-cart"></i>
@@ -229,6 +362,14 @@
                 <span>CONTACT</span>
             </button>
         </nav>
+    </div>
+
+    <!-- MODAL DÉTAIL PRODUIT -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeProductModal()">✕</button>
+            <div id="product-detail"></div>
+        </div>
     </div>
 
     <script src="script.js"></script>
