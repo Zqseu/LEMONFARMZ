@@ -52,7 +52,7 @@ if (closeBtn) {
 
 // GAMES
 let currentGame = null;
-let gameState = {};
+let gameRunning = false;
 
 function initGame(game) {
     currentGame = game;
@@ -61,220 +61,261 @@ function initGame(game) {
     const ctx = canvas.getContext('2d');
     
     gameContainer.style.display = 'block';
+    gameRunning = true;
     
-    if (game === 'snake') {
-        startSnakeGame(ctx, canvas);
-    } else if (game === 'spin') {
-        startSpinGame(ctx, canvas);
+    if (game === 'flappy') {
+        startFlappyGame(ctx, canvas);
+    } else if (game === 'tap') {
+        startTapGame(ctx, canvas);
     }
 }
 
 function exitGame() {
     document.getElementById('game-container').style.display = 'none';
+    gameRunning = false;
     currentGame = null;
 }
 
-// SNAKE GAME
-function startSnakeGame(ctx, canvas) {
-    const gridSize = 20;
-    let snake = [{x: 10, y: 10}];
-    let food = {x: 15, y: 15};
-    let dx = 1, dy = 0;
+// FLAPPY LEMON GAME
+function startFlappyGame(ctx, canvas) {
+    let bird = { x: 50, y: canvas.height / 2, width: 30, height: 30, velocity: 0 };
+    let gravity = 0.5;
+    let jump = -12;
+    let gameOver = false;
     let score = 0;
-    let gameRunning = true;
+    let pipes = [];
+    let frameCount = 0;
     
-    function drawGame() {
-        // Fond
-        ctx.fillStyle = '#003d0f';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        // Grille
-        ctx.strokeStyle = 'rgba(0, 255, 65, 0.1)';
-        ctx.lineWidth = 0.5;
-        for (let i = 0; i < canvas.width; i += gridSize) {
-            ctx.beginPath();
-            ctx.moveTo(i, 0);
-            ctx.lineTo(i, canvas.height);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.moveTo(0, i);
-            ctx.lineTo(canvas.width, i);
-            ctx.stroke();
-        }
-        
-        // Serpent
-        snake.forEach((segment, index) => {
-            if (index === 0) {
-                ctx.fillStyle = '#FFFF00';
-                ctx.shadowColor = '#00FF41';
-                ctx.shadowBlur = 10;
-            } else {
-                ctx.fillStyle = '#00FF41';
-                ctx.shadowColor = 'transparent';
-            }
-            ctx.fillRect(segment.x * gridSize + 2, segment.y * gridSize + 2, gridSize - 4, gridSize - 4);
-        });
-        
-        // Nourriture (citron)
+    function drawBird() {
         ctx.fillStyle = '#FFFF00';
-        ctx.shadowColor = '#FFFF00';
-        ctx.shadowBlur = 15;
+        ctx.shadowColor = '#FFD60A';
+        ctx.shadowBlur = 10;
         ctx.beginPath();
-        ctx.arc(food.x * gridSize + gridSize / 2, food.y * gridSize + gridSize / 2, gridSize / 3, 0, Math.PI * 2);
+        ctx.ellipse(bird.x, bird.y, bird.width / 2, bird.height / 2, bird.velocity * 0.05, 0, Math.PI * 2);
         ctx.fill();
         
-        // Score
-        ctx.fillStyle = '#00FF41';
-        ctx.font = 'bold 14px Arial';
-        ctx.fillText('Score: ' + score, 10, 20);
+        // Yeux
+        ctx.fillStyle = '#000';
+        ctx.beginPath();
+        ctx.arc(bird.x + 8, bird.y - 5, 5, 0, Math.PI * 2);
+        ctx.fill();
+        
+        ctx.shadowColor = 'transparent';
     }
     
-    function update() {
-        if (!gameRunning) return;
+    function drawPipes() {
+        pipes.forEach(pipe => {
+            // Tuyau du haut
+            ctx.fillStyle = '#333';
+            ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+            
+            // Tuyau du bas
+            ctx.fillRect(pipe.x, pipe.top + pipe.gap, pipe.width, canvas.height - pipe.top - pipe.gap);
+            
+            // Bordure
+            ctx.strokeStyle = '#555';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(pipe.x, 0, pipe.width, pipe.top);
+            ctx.strokeRect(pipe.x, pipe.top + pipe.gap, pipe.width, canvas.height - pipe.top - pipe.gap);
+        });
+    }
+    
+    function updateGame() {
+        bird.velocity += gravity;
+        bird.y += bird.velocity;
         
-        const head = {x: snake[0].x + dx, y: snake[0].y + dy};
-        
-        // Collision murs
-        if (head.x < 0 || head.x >= canvas.width / gridSize || head.y < 0 || head.y >= canvas.height / gridSize) {
-            gameRunning = false;
-            alert('Game Over! Score: ' + score);
-            localStorage.setItem('snakeRecord', Math.max(score, parseInt(localStorage.getItem('snakeRecord') || 0)));
-            document.getElementById('snake-record').textContent = localStorage.getItem('snakeRecord');
-            exitGame();
-            return;
+        // Collision avec sol/plafond
+        if (bird.y + bird.height / 2 > canvas.height || bird.y - bird.height / 2 < 0) {
+            gameOver = true;
         }
         
-        // Collision avec soi-même
-        if (snake.some(s => s.x === head.x && s.y === head.y)) {
-            gameRunning = false;
-            alert('Game Over! Score: ' + score);
-            exitGame();
-            return;
+        frameCount++;
+        if (frameCount % 90 === 0) {
+            let gap = 120;
+            let top = Math.random() * (canvas.height - gap - 100) + 50;
+            pipes.push({ x: canvas.width, width: 80, top: top, gap: gap });
         }
         
-        snake.unshift(head);
+        pipes = pipes.filter(pipe => pipe.x > -pipe.width);
         
-        // Manger la nourriture
-        if (head.x === food.x && head.y === food.y) {
-            score += 10;
-            food = {
-                x: Math.floor(Math.random() * (canvas.width / gridSize)),
-                y: Math.floor(Math.random() * (canvas.height / gridSize))
-            };
-        } else {
-            snake.pop();
+        pipes.forEach(pipe => {
+            pipe.x -= 6;
+            
+            // Collision
+            if (bird.x + bird.width / 2 > pipe.x && bird.x - bird.width / 2 < pipe.x + pipe.width) {
+                if (bird.y - bird.height / 2 < pipe.top || bird.y + bird.height / 2 > pipe.top + pipe.gap) {
+                    gameOver = true;
+                }
+            }
+            
+            // Score
+            if (pipe.x === bird.x) {
+                score++;
+            }
+        });
+    }
+    
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        drawBird();
+        drawPipes();
+        
+        // Score
+        ctx.fillStyle = '#FFFF00';
+        ctx.font = 'bold 24px Arial';
+        ctx.fillText(score, canvas.width / 2 - 10, 40);
+        
+        if (gameOver) {
+            ctx.fillStyle = 'rgba(0,0,0,0.6)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FFFF00';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('GAME OVER!', canvas.width / 2, canvas.height / 2 - 20);
+            ctx.font = '20px Arial';
+            ctx.fillText('Score: ' + score, canvas.width / 2, canvas.height / 2 + 20);
+            ctx.textAlign = 'left';
         }
     }
     
     function gameLoop() {
-        update();
-        drawGame();
-        setTimeout(gameLoop, 100);
+        if (gameRunning && !gameOver) {
+            updateGame();
+        }
+        draw();
+        requestAnimationFrame(gameLoop);
     }
     
-    // Contrôles
+    // Controls
+    canvas.addEventListener('click', () => {
+        if (gameRunning && !gameOver) {
+            bird.velocity = jump;
+        } else if (gameRunning && gameOver) {
+            startFlappyGame(ctx, canvas);
+        }
+    });
+    
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowUp' && dy === 0) { dx = 0; dy = -1; }
-        if (e.key === 'ArrowDown' && dy === 0) { dx = 0; dy = 1; }
-        if (e.key === 'ArrowLeft' && dx === 0) { dx = -1; dy = 0; }
-        if (e.key === 'ArrowRight' && dx === 0) { dx = 1; dy = 0; }
+        if (e.code === 'Space') {
+            if (gameRunning && !gameOver) bird.velocity = jump;
+            else if (gameRunning && gameOver) startFlappyGame(ctx, canvas);
+        }
     });
     
     gameLoop();
 }
 
-// SPIN GAME
-function startSpinGame(ctx, canvas) {
-    const prizes = [50, 100, 300, 70, 120, 200, 150, 250];
-    let rotation = 0;
-    let isSpinning = false;
-    let finalPrize = 0;
+// TAP TAP GAME
+function startTapGame(ctx, canvas) {
+    let score = 0;
+    let gameOver = false;
+    let timeLeft = 30;
+    let lemons = [];
+    let startTime = Date.now();
     
-    function drawWheel() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const radius = 100;
-        
-        ctx.save();
-        ctx.translate(centerX, centerY);
-        ctx.rotate(rotation);
-        
-        // Roue
-        for (let i = 0; i < prizes.length; i++) {
-            const angle = (Math.PI * 2 / prizes.length) * i;
-            const nextAngle = (Math.PI * 2 / prizes.length) * (i + 1);
-            
-            ctx.fillStyle = i % 2 === 0 ? '#00FF41' : '#FFFF00';
-            ctx.beginPath();
-            ctx.arc(0, 0, radius, angle, nextAngle);
-            ctx.lineTo(0, 0);
-            ctx.fill();
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            
-            // Texte
-            const textAngle = angle + (nextAngle - angle) / 2;
-            ctx.save();
-            ctx.rotate(textAngle);
-            ctx.fillStyle = '#000';
-            ctx.font = 'bold 12px Arial';
-            ctx.textAlign = 'right';
-            ctx.fillText(prizes[i] + '€', radius - 20, 5);
-            ctx.restore();
+    function createLemon() {
+        if (lemons.length < 5 && Math.random() < 0.1) {
+            lemons.push({
+                x: Math.random() * (canvas.width - 60) + 30,
+                y: Math.random() * (canvas.height - 60) + 30,
+                size: 30,
+                active: true
+            });
         }
-        
-        ctx.restore();
-        
-        // Pointeur
-        ctx.fillStyle = '#FFFF00';
-        ctx.beginPath();
-        ctx.moveTo(centerX, 20);
-        ctx.lineTo(centerX - 10, 40);
-        ctx.lineTo(centerX + 10, 40);
-        ctx.fill();
-        ctx.shadowColor = '#FFFF00';
-        ctx.shadowBlur = 10;
     }
     
-    function spin() {
-        if (isSpinning) return;
-        isSpinning = true;
-        
-        const spins = Math.random() * 10 + 5;
-        const endRotation = spins * Math.PI * 2 + Math.random() * Math.PI * 2;
-        const duration = 3000;
-        const startTime = Date.now();
-        
-        function animate() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            
-            rotation = endRotation * progress;
-            drawWheel();
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                const prizeIndex = Math.floor((prizes.length - (rotation % (Math.PI * 2)) / (Math.PI * 2 / prizes.length))) % prizes.length;
-                finalPrize = prizes[prizeIndex];
-                alert('🎉 Vous avez gagné ' + finalPrize + '€!');
-                isSpinning = false;
+    function drawLemons() {
+        lemons.forEach(lemon => {
+            if (lemon.active) {
+                ctx.fillStyle = '#FFFF00';
+                ctx.shadowColor = '#FFD60A';
+                ctx.shadowBlur = 15;
+                ctx.beginPath();
+                ctx.arc(lemon.x, lemon.y, lemon.size, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Feuille
+                ctx.fillStyle = '#228B22';
+                ctx.beginPath();
+                ctx.ellipse(lemon.x + 20, lemon.y - 20, 10, 15, -0.5, 0, Math.PI * 2);
+                ctx.fill();
+                
+                ctx.shadowColor = 'transparent';
             }
-        }
-        
-        animate();
+        });
     }
     
-    drawWheel();
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#1a1a1a';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        createLemon();
+        drawLemons();
+        
+        // UI
+        ctx.fillStyle = '#FFFF00';
+        ctx.font = 'bold 28px Arial';
+        ctx.fillText('Score: ' + score, 20, 40);
+        ctx.font = 'bold 20px Arial';
+        ctx.fillText('Temps: ' + Math.max(0, timeLeft), canvas.width - 150, 40);
+        
+        if (gameOver) {
+            ctx.fillStyle = 'rgba(0,0,0,0.8)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#FFFF00';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('TEMPS ÉCOULÉ!', canvas.width / 2, canvas.height / 2 - 20);
+            ctx.font = '24px Arial';
+            ctx.fillText('Score Final: ' + score, canvas.width / 2, canvas.height / 2 + 30);
+            ctx.textAlign = 'left';
+        }
+    }
     
-    canvas.addEventListener('click', spin);
-    ctx.fillStyle = '#00FF41';
-    ctx.font = 'bold 16px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Clique pour tourner!', canvas.width / 2, canvas.height - 20);
+    function update() {
+        const elapsed = (Date.now() - startTime) / 1000;
+        timeLeft = 30 - Math.floor(elapsed);
+        
+        if (timeLeft <= 0) {
+            gameOver = true;
+            localStorage.setItem('tapRecord', Math.max(score, parseInt(localStorage.getItem('tapRecord') || 0)));
+            document.getElementById('tap-record').textContent = localStorage.getItem('tapRecord');
+        }
+        
+        lemons = lemons.filter(l => l.active);
+    }
+    
+    function gameLoop() {
+        update();
+        draw();
+        if (gameRunning && !gameOver) {
+            requestAnimationFrame(gameLoop);
+        }
+    }
+    
+    canvas.addEventListener('click', (e) => {
+        if (!gameOver) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            lemons.forEach(lemon => {
+                if (lemon.active) {
+                    const distance = Math.hypot(x - lemon.x, y - lemon.y);
+                    if (distance < lemon.size) {
+                        lemon.active = false;
+                        score++;
+                    }
+                }
+            });
+        }
+    });
+    
+    gameLoop();
 }
 
 // Cart System
@@ -331,61 +372,59 @@ function showProductDetail(productId) {
     
     let detailHTML = '';
     
-    if (productId === 'banana-sift') {
+    if (productId === 'olive') {
         detailHTML = `
-            <h2 style="color: #FFFF00; margin-bottom: 15px; text-shadow: 0 0 10px #00FF41;">Olive Sift Banana</h2>
-            <div style="background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(1, 0, 0, 0.3) 100%); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00FF41;">
-                <p style="color: var(--text-muted); margin-bottom: 10px;">Catégorie: <span style="color: #00FF41; text-shadow: 0 0 5px #00FF41;">Olive Farm</span></p>
+            <h2 style="color: #FFD60A; margin-bottom: 15px;">Olive Farm</h2>
+            <div style="background: linear-gradient(135deg, rgba(255, 214, 10, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <p style="color: var(--text-muted); margin-bottom: 10px;">Catégorie: <span style="color: #FFD60A;">Olive</span></p>
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <span class="tag">🟢 Banana</span>
-                    <span class="tag">🍋 Sift</span>
+                    <span class="tag">🟢 Olive</span>
                 </div>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid #00FF41; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
-                <h3 style="color: #FFFF00; margin-bottom: 10px; text-shadow: 0 0 5px #00FF41;">Tarifs</h3>
+            <div style="background: var(--card-bg); border: 1px solid #FFD60A; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                <h3 style="color: #FFD60A; margin-bottom: 10px;">Tarifs</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <div style="background: rgba(0, 255, 65, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #00FF41;">
+                    <div style="background: rgba(255, 214, 10, 0.1); padding: 10px; border-radius: 8px; text-align: center;">
                         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 5px;">5g</p>
-                        <p style="color: #FFFF00; font-weight: bold; text-shadow: 0 0 5px #00FF41;">70€</p>
-                        <button class="add-to-cart-btn" onclick="addToCart('Olive Sift Banana 5g', 70); closeProductModal();">Ajouter</button>
+                        <p style="color: #FFD60A; font-weight: bold;">60€</p>
+                        <button class="add-to-cart-btn" onclick="addToCart('Olive Farm 5g', 60); closeProductModal();">Ajouter</button>
                     </div>
-                    <div style="background: rgba(0, 255, 65, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #00FF41;">
+                    <div style="background: rgba(255, 214, 10, 0.1); padding: 10px; border-radius: 8px; text-align: center;">
                         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 5px;">10g</p>
-                        <p style="color: #FFFF00; font-weight: bold; text-shadow: 0 0 5px #00FF41;">120€</p>
-                        <button class="add-to-cart-btn" onclick="addToCart('Olive Sift Banana 10g', 120); closeProductModal();">Ajouter</button>
+                        <p style="color: #FFD60A; font-weight: bold;">110€</p>
+                        <button class="add-to-cart-btn" onclick="addToCart('Olive Farm 10g', 110); closeProductModal();">Ajouter</button>
                     </div>
                 </div>
-                <p style="color: #00FF41; text-align: center; margin-top: 15px; font-weight: bold; text-shadow: 0 0 5px #00FF41;">+ en privé</p>
+                <p style="color: #FFD60A; text-align: center; margin-top: 15px; font-weight: bold;">+ en privé</p>
             </div>
         `;
-    } else if (productId === 'lemonhaze') {
+    } else if (productId === 'jaune') {
         detailHTML = `
-            <h2 style="color: #FFFF00; margin-bottom: 15px; text-shadow: 0 0 10px #00FF41;">Jaune Mousseux Lemon Haze</h2>
-            <div style="background: linear-gradient(135deg, rgba(255, 255, 0, 0.1) 0%, rgba(0, 255, 65, 0.2) 100%); padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #00FF41;">
-                <p style="color: var(--text-muted); margin-bottom: 10px;">Catégorie: <span style="color: #00FF41; text-shadow: 0 0 5px #00FF41;">Jaune Mousseux</span></p>
+            <h2 style="color: #FFD60A; margin-bottom: 15px;">Jaune Mousseux</h2>
+            <div style="background: linear-gradient(135deg, rgba(255, 214, 10, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%); padding: 15px; border-radius: 10px; margin-bottom: 15px;">
+                <p style="color: var(--text-muted); margin-bottom: 10px;">Catégorie: <span style="color: #FFD60A;">Jaune Mousseux</span></p>
                 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <span class="tag">🍋 Lemon</span>
-                    <span class="tag">⚡ Haze</span>
+                    <span class="tag">💛 Jaune</span>
                 </div>
             </div>
-            <div style="background: var(--card-bg); border: 1px solid #00FF41; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
-                <h3 style="color: #FFFF00; margin-bottom: 10px; text-shadow: 0 0 5px #00FF41;">Tarifs</h3>
+            <div style="background: var(--card-bg); border: 1px solid #FFD60A; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                <h3 style="color: #FFD60A; margin-bottom: 10px;">Tarifs</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                    <div style="background: rgba(0, 255, 65, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #00FF41;">
+                    <div style="background: rgba(255, 214, 10, 0.1); padding: 10px; border-radius: 8px; text-align: center;">
                         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 5px;">10g</p>
-                        <p style="color: #FFFF00; font-weight: bold; text-shadow: 0 0 5px #00FF41;">50€</p>
-                        <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux Lemon Haze 10g', 50); closeProductModal();">Ajouter</button>
+                        <p style="color: #FFD60A; font-weight: bold;">50€</p>
+                        <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux 10g', 50); closeProductModal();">Ajouter</button>
                     </div>
-                    <div style="background: rgba(0, 255, 65, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #00FF41;">
+                    <div style="background: rgba(255, 214, 10, 0.1); padding: 10px; border-radius: 8px; text-align: center;">
                         <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 5px;">25g</p>
-                        <p style="color: #FFFF00; font-weight: bold; text-shadow: 0 0 5px #00FF41;">100€</p>
-                        <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux Lemon Haze 25g', 100); closeProductModal();">Ajouter</button>
+                        <p style="color: #FFD60A; font-weight: bold;">100€</p>
+                        <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux 25g', 100); closeProductModal();">Ajouter</button>
                     </div>
                 </div>
-                <div style="background: rgba(0, 255, 65, 0.1); padding: 10px; border-radius: 8px; text-align: center; border: 1px solid #00FF41;">
+                <div style="background: rgba(255, 214, 10, 0.1); padding: 10px; border-radius: 8px; text-align: center;">
                     <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 5px;">100g</p>
-                    <p style="color: #FFFF00; font-weight: bold; text-shadow: 0 0 5px #00FF41;">300€</p>
-                    <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux Lemon Haze 100g', 300); closeProductModal();">Ajouter</button>
+                    <p style="color: #FFD60A; font-weight: bold;">300€</p>
+                    <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux 100g', 300); closeProductModal();">Ajouter</button>
                 </div>
             </div>
         `;

@@ -14,7 +14,6 @@
         <div class="intro-content">
             <div class="intro-logo">
                 <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="animated-logo">
-                    <!-- Citron principal -->
                     <defs>
                         <radialGradient id="lemonGrad" cx="35%" cy="35%">
                             <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:1" />
@@ -33,24 +32,29 @@
                     <ellipse cx="100" cy="100" rx="70" ry="75" fill="url(#lemonGrad)" filter="url(#glow)" class="lemon-body"/>
                     
                     <!-- Feuille -->
-                    <ellipse cx="145" cy="45" rx="25" ry="35" fill="#00FF41" opacity="0.9" transform="rotate(-30 145 45)" class="lemon-leaf"/>
+                    <ellipse cx="145" cy="45" rx="25" ry="35" fill="#228B22" opacity="0.9" transform="rotate(-30 145 45)" class="lemon-leaf"/>
                     
                     <!-- Yeux -->
-                    <circle cx="75" cy="85" r="8" fill="#000" class="lemon-eye"/>
-                    <circle cx="125" cy="85" r="8" fill="#000" class="lemon-eye"/>
+                    <circle cx="75" cy="85" r="10" fill="#000" class="lemon-eye"/>
+                    <circle cx="125" cy="85" r="10" fill="#000" class="lemon-eye"/>
                     
                     <!-- Pupilles brillantes -->
-                    <circle cx="77" cy="83" r="3" fill="#00FF41" opacity="0.8"/>
-                    <circle cx="127" cy="83" r="3" fill="#00FF41" opacity="0.8"/>
+                    <circle cx="78" cy="82" r="4" fill="#FFF" opacity="0.8"/>
+                    <circle cx="128" cy="82" r="4" fill="#FFF" opacity="0.8"/>
                     
                     <!-- Bouche souriante -->
                     <path d="M 75 115 Q 100 130 125 115" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" class="lemon-mouth"/>
                     
-                    <!-- Pistolet dans la main -->
+                    <!-- Pistolet réaliste -->
                     <g class="lemon-gun">
-                        <rect x="130" y="110" width="35" height="12" fill="#333" rx="2"/>
-                        <circle cx="162" cy="116" r="6" fill="#555"/>
-                        <rect x="145" y="100" width="8" height="15" fill="#444"/>
+                        <!-- Canon -->
+                        <rect x="130" y="110" width="45" height="10" fill="#222" rx="2"/>
+                        <!-- Culasse -->
+                        <rect x="145" y="105" width="30" height="20" fill="#333" rx="2"/>
+                        <!-- Détente -->
+                        <rect x="150" y="115" width="6" height="12" fill="#222"/>
+                        <!-- Guidon -->
+                        <rect x="170" y="103" width="3" height="8" fill="#444"/>
                     </g>
                 </svg>
             </div>
@@ -72,22 +76,10 @@
             <div class="header-content">
                 <button class="header-btn close-btn">✕ Close</button>
                 <div class="header-logo">
-                    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <radialGradient id="headerLemonGrad" cx="35%" cy="35%">
-                                <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#FFD60A;stop-opacity:1" />
-                            </radialGradient>
-                        </defs>
-                        <ellipse cx="50" cy="50" rx="35" ry="40" fill="url(#headerLemonGrad)"/>
-                        <circle cx="40" cy="42" r="4" fill="#000"/>
-                        <circle cx="60" cy="42" r="4" fill="#000"/>
-                        <path d="M 40 58 Q 50 65 60 58" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                        <ellipse cx="70" cy="25" rx="12" ry="18" fill="#00FF41" opacity="0.9" transform="rotate(-30 70 25)"/>
-                    </svg>
+                    <span class="logo-emoji">🍋</span>
                     <span>LEMONFARMZ</span>
                 </div>
-                <button class="header-btn menu-btn">☰</button>
+                <button class="header-btn menu-btn">≡</button>
             </div>
             <div class="user-info">
                 <div class="user-id">
@@ -114,29 +106,29 @@
                 <div class="welcome-box">
                     <h2>Bienvenue chez LEMONFARMZ 🍋</h2>
                     <p class="welcome-text">👉 Clique juste en dessous pour ouvrir notre mini-app et découvrir tous nos produits, nos menus, et surtout nos nouveaux arrivages chaque semaine</p>
-                    <p class="gift-text">🎁 toute vos commande sont livrer avec un cadeau 🎁</p>
+                    <p class="gift-text">🎁 Toute commande livrée avec un cadeau 🎁</p>
                 </div>
 
                 <div class="info-section">
                     <div class="info-card">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h3>Livraison</h3>
-                            <p>de 13h à 00h</p>
-                        </div>
-                    </div>
-                    <div class="info-card">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <h3>Meet up</h3>
-                            <p>de 12h à 00h</p>
+                            <p>Menton - Espèces uniquement</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Horaires</h3>
+                            <p>12h à 00h</p>
                         </div>
                     </div>
                     <div class="info-card">
                         <i class="fas fa-globe"></i>
                         <div>
-                            <h3>Envoi</h3>
-                            <p>toute l'Europe</p>
+                            <h3>Livraison</h3>
+                            <p>Toute l'Europe</p>
                         </div>
                     </div>
                 </div>
@@ -146,35 +138,35 @@
                 </div>
             </section>
 
-            <!-- PAGE: ARCADE (JEUX) -->
+            <!-- PAGE: JEUX -->
             <section id="arcade" class="page">
                 <h2 class="section-title">ARCADE</h2>
                 
                 <div class="games-container">
-                    <div class="game-card" onclick="initGame('snake')">
-                        <div class="game-image snake-game-image">
-                            <span class="game-title-neon">SNAKE</span>
+                    <div class="game-card" onclick="initGame('flappy')">
+                        <div class="game-image flappy-image">
+                            <span class="game-title-neon">FLAPPY</span>
                         </div>
-                        <h3>Snake</h3>
-                        <p>Mange les citrons et grimpe dans le classement !</p>
-                        <p class="record">Record perso : <span id="snake-record">5</span></p>
+                        <h3>Flappy Lemon</h3>
+                        <p>Fais passer le citron entre les obstacles!</p>
+                        <p class="record">Record: <span id="flappy-record">0</span></p>
                         <button class="play-btn">Jouer</button>
                     </div>
 
-                    <div class="game-card" onclick="initGame('spin')">
-                        <div class="game-image spin-image">
-                            <span class="game-title">SPIN</span>
+                    <div class="game-card" onclick="initGame('tap')">
+                        <div class="game-image tap-image">
+                            <span class="game-title">TAP</span>
                         </div>
-                        <h3>Lucky Spin</h3>
-                        <p>Tourne la roue et remporte des récompenses!</p>
-                        <p class="record">Meilleur prix : 300€</p>
+                        <h3>Tap Tap</h3>
+                        <p>Clique sur les citrons qui apparaissent!</p>
+                        <p class="record">Record: <span id="tap-record">0</span></p>
                         <button class="play-btn">Jouer</button>
                     </div>
                 </div>
 
                 <!-- Game Canvas -->
                 <div id="game-container" style="display:none; margin-top: 20px;">
-                    <canvas id="game-canvas" width="350" height="400"></canvas>
+                    <canvas id="game-canvas" width="350" height="500"></canvas>
                     <button class="back-btn" onclick="exitGame()">← Retour</button>
                 </div>
             </section>
@@ -187,101 +179,59 @@
                 </div>
 
                 <div class="promo-banner">
-                    <p>🎁 Chaque commande livré avec un cadeau 🎁</p>
+                    <p>🎁 Chaque commande livrée avec un cadeau 🎁</p>
                 </div>
 
                 <div class="filter-section">
-                    <button class="filter-btn">
-                        <i class="fas fa-sliders-h"></i>
-                    </button>
+                    <button class="filter-btn"><i class="fas fa-sliders-h"></i></button>
                     <select class="filter-dropdown" id="category-filter">
                         <option value="">Catégories</option>
-                        <option value="banana">Banana Sift</option>
-                        <option value="lemonhaze">Lemon Haze</option>
+                        <option value="olive">Olive</option>
+                        <option value="jaune">Jaune Mousseux</option>
                         <option value="all">Tous les produits</option>
                     </select>
                     <select class="filter-dropdown" id="farm-filter">
                         <option value="">Farms</option>
-                        <option value="olive">Olive Farm</option>
-                        <option value="jaune">Jaune Mousseux</option>
                         <option value="all">Toutes les farms</option>
                     </select>
                 </div>
 
                 <div class="products-grid">
-                    <!-- PRODUIT 1: OLIVE SIFT BANANA -->
-                    <div class="product-card" data-category="banana" data-farm="olive" onclick="showProductDetail('banana-sift')">
+                    <!-- PRODUIT 1: OLIVE -->
+                    <div class="product-card" data-category="olive" onclick="showProductDetail('olive')">
                         <div class="product-image-container">
-                            <svg class="product-image-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="urbanGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#00FF41;stop-opacity:0.3" />
-                                        <stop offset="100%" style="stop-color:#003d0f;stop-opacity:0.8" />
-                                    </linearGradient>
-                                </defs>
-                                <rect width="400" height="400" fill="url(#urbanGrad1)"/>
-                                <rect x="20" y="150" width="80" height="200" fill="#1a1a1a"/>
-                                <rect x="300" y="180" width="80" height="170" fill="#0d0d0d"/>
-                                <circle cx="200" cy="180" r="80" fill="#FFFF00" stroke="#FFD60A" stroke-width="3"/>
-                                <circle cx="180" cy="160" r="8" fill="#000"/>
-                                <circle cx="220" cy="160" r="8" fill="#000"/>
-                                <path d="M 180 190 Q 200 210 220 190" stroke="#000" stroke-width="2" fill="none"/>
-                                <rect x="240" y="140" width="50" height="20" fill="#333" rx="3"/>
-                                <circle cx="290" cy="150" r="8" fill="#555"/>
-                                <text x="200" y="340" font-size="48" font-weight="bold" text-anchor="middle" fill="#00FF41" font-family="Arial Black">BANANA</text>
-                                <text x="200" y="375" font-size="36" font-weight="bold" text-anchor="middle" fill="#00FF41" font-family="Arial Black">SIFT</text>
-                            </svg>
+                            <div class="product-image-real olive-image"></div>
                         </div>
                         <div class="product-info">
-                            <h3>Olive Sift Banana</h3>
+                            <h3>Olive Farm</h3>
                             <div class="product-tags">
-                                <span class="tag">🟢 Banana</span>
-                                <span class="tag">🍋 Sift</span>
+                                <span class="tag">🟢 Olive</span>
                             </div>
                             <div class="product-prices">
-                                <p>5g <span class="price">70€</span></p>
-                                <p>10g <span class="price">120€</span></p>
-                                <p class="more-text">+ en privé</p>
+                                <p>5g <span class="price">60€</span></p>
+                                <p>10g <span class="price">110€</span></p>
+                                <p>+ en privé</p>
                             </div>
-                            <button class="add-to-cart-btn" onclick="addToCart('Olive Sift Banana 5g', 70); event.stopPropagation();">+ Ajouter</button>
+                            <button class="add-to-cart-btn" onclick="addToCart('Olive Farm 5g', 60); event.stopPropagation();">+ Panier</button>
                         </div>
                     </div>
 
-                    <!-- PRODUIT 2: JAUNE MOUSSEUX LEMON HAZE -->
-                    <div class="product-card" data-category="lemonhaze" data-farm="jaune" onclick="showProductDetail('lemonhaze')">
+                    <!-- PRODUIT 2: JAUNE MOUSSEUX -->
+                    <div class="product-card" data-category="jaune" onclick="showProductDetail('jaune')">
                         <div class="product-image-container">
-                            <svg class="product-image-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                                <defs>
-                                    <linearGradient id="urbanGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:0.4" />
-                                        <stop offset="100%" style="stop-color:#00FF41;stop-opacity:0.6" />
-                                    </linearGradient>
-                                </defs>
-                                <rect width="400" height="400" fill="url(#urbanGrad2)"/>
-                                <rect x="30" y="140" width="90" height="210" fill="#1a1a1a"/>
-                                <rect x="280" y="170" width="90" height="180" fill="#0d0d0d"/>
-                                <circle cx="200" cy="180" r="80" fill="#FFFF00" stroke="#00FF41" stroke-width="3"/>
-                                <circle cx="180" cy="160" r="8" fill="#000"/>
-                                <circle cx="220" cy="160" r="8" fill="#000"/>
-                                <path d="M 180 190 Q 200 210 220 190" stroke="#000" stroke-width="2" fill="none"/>
-                                <rect x="240" y="140" width="50" height="20" fill="#333" rx="3"/>
-                                <circle cx="290" cy="150" r="8" fill="#555"/>
-                                <text x="200" y="340" font-size="44" font-weight="bold" text-anchor="middle" fill="#00FF41" font-family="Arial Black">LEMON</text>
-                                <text x="200" y="375" font-size="40" font-weight="bold" text-anchor="middle" fill="#FFFF00" font-family="Arial Black">HAZE</text>
-                            </svg>
+                            <div class="product-image-real jaune-image"></div>
                         </div>
                         <div class="product-info">
-                            <h3>Jaune Mousseux Lemon Haze</h3>
+                            <h3>Jaune Mousseux</h3>
                             <div class="product-tags">
-                                <span class="tag">🍋 Lemon</span>
-                                <span class="tag">⚡ Haze</span>
+                                <span class="tag">💛 Jaune</span>
                             </div>
                             <div class="product-prices">
                                 <p>10g <span class="price">50€</span></p>
                                 <p>25g <span class="price">100€</span></p>
                                 <p>100g <span class="price">300€</span></p>
                             </div>
-                            <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux Lemon Haze 10g', 50); event.stopPropagation();">+ Ajouter</button>
+                            <button class="add-to-cart-btn" onclick="addToCart('Jaune Mousseux 10g', 50); event.stopPropagation();">+ Panier</button>
                         </div>
                     </div>
                 </div>
@@ -302,12 +252,12 @@
                             <span>Total:</span>
                             <span id="total-price">0€</span>
                         </div>
-                        <button class="checkout-btn">Commander</button>
+                        <button class="checkout-btn">Passer la commande</button>
                     </div>
                 </div>
             </section>
 
-            <!-- PAGE: NOUS CONTACTER -->
+            <!-- PAGE: CONTACT -->
             <section id="contact" class="page">
                 <h2 class="section-title">NOUS CONTACTER</h2>
                 <p class="contact-subtitle">Choisissez votre forme préférée</p>
@@ -317,15 +267,7 @@
                         <div class="contact-icon">📱</div>
                         <div class="contact-info">
                             <h3>Instagram</h3>
-                            <p>Rejoignez notre insta</p>
-                        </div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="#" class="contact-item">
-                        <div class="contact-icon">🥔</div>
-                        <div class="contact-info">
-                            <h3>Potato</h3>
-                            <p>Rejoignez notre potato</p>
+                            <p>@lemonfarmz</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
@@ -333,62 +275,46 @@
                         <div class="contact-icon">💬</div>
                         <div class="contact-info">
                             <h3>WhatsApp</h3>
-                            <p>Notre Whatsapp</p>
-                        </div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="#" class="contact-item">
-                        <div class="contact-icon">✉️</div>
-                        <div class="contact-info">
-                            <h3>Canal telegram</h3>
-                            <p>Notre canal telegram</p>
-                        </div>
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
-                    <a href="#" class="contact-item">
-                        <div class="contact-icon">📧</div>
-                        <div class="contact-info">
-                            <h3>Canal secours</h3>
-                            <p>Canal secours</p>
+                            <p>Contactez-nous</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     <a href="#" class="contact-item">
                         <div class="contact-icon">✈️</div>
                         <div class="contact-info">
-                            <h3>Groupe telegram</h3>
-                            <p>Chat telegram</p>
+                            <h3>Telegram</h3>
+                            <p>@lemonfarmz_bot</p>
                         </div>
                         <i class="fas fa-chevron-right"></i>
                     </a>
                 </div>
             </section>
 
-            <!-- PAGE: INFORMATIONS -->
+            <!-- PAGE: INFOS -->
             <section id="infos" class="page">
                 <h2 class="section-title">INFORMATIONS</h2>
-                <p class="infos-subtitle">Toutes les infos sur nos services</p>
+                <p class="infos-subtitle">Tout ce que vous devez savoir</p>
                 
                 <div class="info-cards">
                     <div class="large-info-card">
-                        <i class="fas fa-clock"></i>
-                        <h3>Horaire de livraison</h3>
-                        <p>Ouvert de 12h à 00h</p>
-                    </div>
-                    <div class="large-info-card">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h3>Zone de livraison</h3>
-                        <p>Toute l'Europe</p>
+                        <i class="fas fa-map-pin"></i>
+                        <h3>Meet up - Menton</h3>
+                        <p>Espèces uniquement</p>
                     </div>
                     <div class="large-info-card">
                         <i class="fas fa-truck"></i>
-                        <h3>Délai de livraison</h3>
-                        <p>2-3 jours ouvrables</p>
+                        <h3>Livraison</h3>
+                        <p>Toute l'Europe - 2-3 jours</p>
                     </div>
                     <div class="large-info-card">
-                        <i class="fas fa-lock"></i>
+                        <i class="fas fa-clock"></i>
+                        <h3>Horaires</h3>
+                        <p>12h à 00h - 7j/7</p>
+                    </div>
+                    <div class="large-info-card">
+                        <i class="fas fa-shield-alt"></i>
                         <h3>Sécurité</h3>
-                        <p>Paiement sécurisé</p>
+                        <p>Transactions sécurisées</p>
                     </div>
                 </div>
             </section>
@@ -401,12 +327,12 @@
                 <span>ACCUEIL</span>
             </button>
             <button class="nav-btn" data-page="arcade">
-                <i class="fas fa-star"></i>
-                <span>⭐</span>
+                <i class="fas fa-gamepad"></i>
+                <span>JEUX</span>
             </button>
             <button class="nav-btn" data-page="boutique">
-                <i class="fas fa-shopping-cart"></i>
-                <span>PANIER</span>
+                <i class="fas fa-shopping-bag"></i>
+                <span>SHOP</span>
             </button>
             <button class="nav-btn" data-page="infos">
                 <i class="fas fa-info-circle"></i>
