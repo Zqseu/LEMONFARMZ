@@ -9,13 +9,82 @@
     <script src="https://cdn.jsdelivr.net/npm/@telegram-apps/sdk@0.0.6/dist/index.umd.js"></script>
 </head>
 <body>
-    <div class="app-container">
+    <!-- INTRO CINÉMATIQUE -->
+    <div id="intro-screen" class="intro-screen">
+        <div class="intro-content">
+            <div class="intro-logo">
+                <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="animated-logo">
+                    <!-- Citron principal -->
+                    <defs>
+                        <radialGradient id="lemonGrad" cx="35%" cy="35%">
+                            <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#FFD60A;stop-opacity:1" />
+                        </radialGradient>
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    
+                    <!-- Corps du citron -->
+                    <ellipse cx="100" cy="100" rx="70" ry="75" fill="url(#lemonGrad)" filter="url(#glow)" class="lemon-body"/>
+                    
+                    <!-- Feuille -->
+                    <ellipse cx="145" cy="45" rx="25" ry="35" fill="#00FF41" opacity="0.9" transform="rotate(-30 145 45)" class="lemon-leaf"/>
+                    
+                    <!-- Yeux -->
+                    <circle cx="75" cy="85" r="8" fill="#000" class="lemon-eye"/>
+                    <circle cx="125" cy="85" r="8" fill="#000" class="lemon-eye"/>
+                    
+                    <!-- Pupilles brillantes -->
+                    <circle cx="77" cy="83" r="3" fill="#00FF41" opacity="0.8"/>
+                    <circle cx="127" cy="83" r="3" fill="#00FF41" opacity="0.8"/>
+                    
+                    <!-- Bouche souriante -->
+                    <path d="M 75 115 Q 100 130 125 115" stroke="#000" stroke-width="3" fill="none" stroke-linecap="round" class="lemon-mouth"/>
+                    
+                    <!-- Pistolet dans la main -->
+                    <g class="lemon-gun">
+                        <rect x="130" y="110" width="35" height="12" fill="#333" rx="2"/>
+                        <circle cx="162" cy="116" r="6" fill="#555"/>
+                        <rect x="145" y="100" width="8" height="15" fill="#444"/>
+                    </g>
+                </svg>
+            </div>
+            
+            <h1 class="intro-title">LEMONFARMZ</h1>
+            <p class="intro-subtitle">HU$TLED 🔥</p>
+            
+            <div class="intro-loader">
+                <div class="loader-bar"></div>
+            </div>
+            
+            <p class="intro-text">Chargement...</p>
+        </div>
+    </div>
+
+    <div class="app-container" style="display:none;" id="app-container">
         <!-- HEADER -->
         <header class="app-header">
             <div class="header-content">
                 <button class="header-btn close-btn">✕ Close</button>
                 <div class="header-logo">
-                    <span class="logo-emoji">🍋</span>
+                    <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="headerLemonGrad" cx="35%" cy="35%">
+                                <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#FFD60A;stop-opacity:1" />
+                            </radialGradient>
+                        </defs>
+                        <ellipse cx="50" cy="50" rx="35" ry="40" fill="url(#headerLemonGrad)"/>
+                        <circle cx="40" cy="42" r="4" fill="#000"/>
+                        <circle cx="60" cy="42" r="4" fill="#000"/>
+                        <path d="M 40 58 Q 50 65 60 58" stroke="#000" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="70" cy="25" rx="12" ry="18" fill="#00FF41" opacity="0.9" transform="rotate(-30 70 25)"/>
+                    </svg>
                     <span>LEMONFARMZ</span>
                 </div>
                 <button class="header-btn menu-btn">☰</button>
@@ -73,7 +142,7 @@
                 </div>
 
                 <div class="team-signature">
-                    <p>La Team LEMONFARMZ 😻</p>
+                    <p>La Team LEMONFARMZ 😎</p>
                 </div>
             </section>
 
@@ -82,25 +151,31 @@
                 <h2 class="section-title">ARCADE</h2>
                 
                 <div class="games-container">
-                    <div class="game-card" onclick="startGame('snake')">
+                    <div class="game-card" onclick="initGame('snake')">
                         <div class="game-image snake-game-image">
                             <span class="game-title-neon">SNAKE</span>
                         </div>
                         <h3>Snake</h3>
-                        <p>Le classique revisité — ramasse les bonus et grimpe dans le classement !</p>
+                        <p>Mange les citrons et grimpe dans le classement !</p>
                         <p class="record">Record perso : <span id="snake-record">5</span></p>
                         <button class="play-btn">Jouer</button>
                     </div>
 
-                    <div class="game-card" onclick="startGame('neospin')">
-                        <div class="game-image neospin-image">
-                            <span class="game-title">NEOSPIN</span>
+                    <div class="game-card" onclick="initGame('spin')">
+                        <div class="game-image spin-image">
+                            <span class="game-title">SPIN</span>
                         </div>
-                        <h3>NeoSpin</h3>
+                        <h3>Lucky Spin</h3>
                         <p>Tourne la roue et remporte des récompenses!</p>
-                        <p class="record">Record perso : 1000</p>
+                        <p class="record">Meilleur prix : 300€</p>
                         <button class="play-btn">Jouer</button>
                     </div>
+                </div>
+
+                <!-- Game Canvas -->
+                <div id="game-container" style="display:none; margin-top: 20px;">
+                    <canvas id="game-canvas" width="350" height="400"></canvas>
+                    <button class="back-btn" onclick="exitGame()">← Retour</button>
                 </div>
             </section>
 
@@ -138,40 +213,30 @@
                     <div class="product-card" data-category="banana" data-farm="olive" onclick="showProductDetail('banana-sift')">
                         <div class="product-image-container">
                             <svg class="product-image-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Fond urbain style LEMONFARMZ -->
                                 <defs>
                                     <linearGradient id="urbanGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#FFD60A;stop-opacity:0.3" />
-                                        <stop offset="100%" style="stop-color:#1a0033;stop-opacity:0.8" />
+                                        <stop offset="0%" style="stop-color:#00FF41;stop-opacity:0.3" />
+                                        <stop offset="100%" style="stop-color:#003d0f;stop-opacity:0.8" />
                                     </linearGradient>
                                 </defs>
                                 <rect width="400" height="400" fill="url(#urbanGrad1)"/>
-                                
-                                <!-- Bâtiments urbains -->
-                                <rect x="20" y="150" width="80" height="200" fill="#2a2a2a"/>
-                                <rect x="300" y="180" width="80" height="170" fill="#1a1a1a"/>
-                                
-                                <!-- Citron avec arme (simplifié) -->
-                                <circle cx="200" cy="180" r="80" fill="#FFD60A" stroke="#FFC300" stroke-width="3"/>
-                                <!-- Œil -->
+                                <rect x="20" y="150" width="80" height="200" fill="#1a1a1a"/>
+                                <rect x="300" y="180" width="80" height="170" fill="#0d0d0d"/>
+                                <circle cx="200" cy="180" r="80" fill="#FFFF00" stroke="#FFD60A" stroke-width="3"/>
                                 <circle cx="180" cy="160" r="8" fill="#000"/>
                                 <circle cx="220" cy="160" r="8" fill="#000"/>
-                                <!-- Bouche -->
                                 <path d="M 180 190 Q 200 210 220 190" stroke="#000" stroke-width="2" fill="none"/>
-                                <!-- Pistolet stylisé -->
                                 <rect x="240" y="140" width="50" height="20" fill="#333" rx="3"/>
                                 <circle cx="290" cy="150" r="8" fill="#555"/>
-                                
-                                <!-- Texte BANANA SIFT -->
-                                <text x="200" y="340" font-size="48" font-weight="bold" text-anchor="middle" fill="#FFD60A" font-family="Arial Black" text-shadow="2px 2px 4px #000">BANANA</text>
-                                <text x="200" y="375" font-size="36" font-weight="bold" text-anchor="middle" fill="#FFC300" font-family="Arial Black">SIFT</text>
+                                <text x="200" y="340" font-size="48" font-weight="bold" text-anchor="middle" fill="#00FF41" font-family="Arial Black">BANANA</text>
+                                <text x="200" y="375" font-size="36" font-weight="bold" text-anchor="middle" fill="#00FF41" font-family="Arial Black">SIFT</text>
                             </svg>
                         </div>
                         <div class="product-info">
                             <h3>Olive Sift Banana</h3>
                             <div class="product-tags">
-                                <span class="tag">🟡 Jaune</span>
-                                <span class="tag">🍌 Banana</span>
+                                <span class="tag">🟢 Banana</span>
+                                <span class="tag">🍋 Sift</span>
                             </div>
                             <div class="product-prices">
                                 <p>5g <span class="price">70€</span></p>
@@ -186,32 +251,22 @@
                     <div class="product-card" data-category="lemonhaze" data-farm="jaune" onclick="showProductDetail('lemonhaze')">
                         <div class="product-image-container">
                             <svg class="product-image-svg" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Fond urbain style LEMONFARMZ -->
                                 <defs>
                                     <linearGradient id="urbanGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
                                         <stop offset="0%" style="stop-color:#FFFF00;stop-opacity:0.4" />
-                                        <stop offset="100%" style="stop-color:#FF6600;stop-opacity:0.8" />
+                                        <stop offset="100%" style="stop-color:#00FF41;stop-opacity:0.6" />
                                     </linearGradient>
                                 </defs>
                                 <rect width="400" height="400" fill="url(#urbanGrad2)"/>
-                                
-                                <!-- Bâtiments urbains -->
-                                <rect x="30" y="140" width="90" height="210" fill="#3a3a3a"/>
-                                <rect x="280" y="170" width="90" height="180" fill="#2a2a2a"/>
-                                
-                                <!-- Citron avec arme (simplifié) -->
-                                <circle cx="200" cy="180" r="80" fill="#FFFF00" stroke="#FFD60A" stroke-width="3"/>
-                                <!-- Œil -->
+                                <rect x="30" y="140" width="90" height="210" fill="#1a1a1a"/>
+                                <rect x="280" y="170" width="90" height="180" fill="#0d0d0d"/>
+                                <circle cx="200" cy="180" r="80" fill="#FFFF00" stroke="#00FF41" stroke-width="3"/>
                                 <circle cx="180" cy="160" r="8" fill="#000"/>
                                 <circle cx="220" cy="160" r="8" fill="#000"/>
-                                <!-- Bouche -->
                                 <path d="M 180 190 Q 200 210 220 190" stroke="#000" stroke-width="2" fill="none"/>
-                                <!-- Pistolet stylisé -->
-                                <rect x="240" y="140" width="50" height="20" fill="#444" rx="3"/>
-                                <circle cx="290" cy="150" r="8" fill="#666"/>
-                                
-                                <!-- Texte LEMONHAZE -->
-                                <text x="200" y="340" font-size="44" font-weight="bold" text-anchor="middle" fill="#FF6600" font-family="Arial Black" text-shadow="2px 2px 4px #000">LEMON</text>
+                                <rect x="240" y="140" width="50" height="20" fill="#333" rx="3"/>
+                                <circle cx="290" cy="150" r="8" fill="#555"/>
+                                <text x="200" y="340" font-size="44" font-weight="bold" text-anchor="middle" fill="#00FF41" font-family="Arial Black">LEMON</text>
                                 <text x="200" y="375" font-size="40" font-weight="bold" text-anchor="middle" fill="#FFFF00" font-family="Arial Black">HAZE</text>
                             </svg>
                         </div>
@@ -291,7 +346,7 @@
                         <i class="fas fa-chevron-right"></i>
                     </a>
                     <a href="#" class="contact-item">
-                        <div class="contact-icon">📨</div>
+                        <div class="contact-icon">📧</div>
                         <div class="contact-info">
                             <h3>Canal secours</h3>
                             <p>Canal secours</p>
